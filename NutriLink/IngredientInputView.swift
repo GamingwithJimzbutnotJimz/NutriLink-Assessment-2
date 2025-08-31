@@ -4,6 +4,7 @@ struct IngredientInputView: View {
     @State private var ingredient: String = ""
     @State private var ingredients: [String] = []
     @State private var navigateToResults = false
+    @State private var showPreferences = false
     @EnvironmentObject var viewModel: MealSuggestionViewModel
 
     var body: some View {
@@ -38,10 +39,21 @@ struct IngredientInputView: View {
                     }
                 }
 
+                
+                Button("Set Preferences") {
+                    showPreferences = true
+                }
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(Color.gray.opacity(0.2))
+                .cornerRadius(10)
+
                 Spacer()
 
+                
                 Button("Find Meals") {
                     viewModel.filterRecipes(by: ingredients)
+                    viewModel.filterByPreferences()
                     navigateToResults = true
                 }
                 .frame(maxWidth: .infinity)
@@ -49,11 +61,17 @@ struct IngredientInputView: View {
                 .background(Color.blue)
                 .foregroundColor(.white)
                 .cornerRadius(12)
-                .padding(.top)
 
+                
                 NavigationLink(destination: RecipeListView()
                                 .environmentObject(viewModel),
                                isActive: $navigateToResults) {
+                    EmptyView()
+                }
+
+                NavigationLink(destination: PreferencesView()
+                                .environmentObject(viewModel),
+                               isActive: $showPreferences) {
                     EmptyView()
                 }
             }

@@ -1,6 +1,4 @@
-import Foundation
-
-struct UserPreferences: Codable {
+struct UserPreferences: Codable, Equatable {
     var preferredDiet: DietType
     var calorieGoal: Int
     var quickMealsOnly: Bool
