@@ -1,17 +1,14 @@
-//
-//  NutriLinkApp.swift
-//  NutriLink
-//
-//  Created by Rifath Parveen on 29/8/2025.
-//
-
 import SwiftUI
 
 @main
 struct NutriLinkApp: App {
+    @StateObject private var viewModel = MealSuggestionViewModel()
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            IngredientInputView()
+                .environmentObject(viewModel)
         }
     }
 }
+
