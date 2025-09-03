@@ -7,10 +7,25 @@ struct RecipeListView: View {
         NavigationStack {
             VStack {
                 if viewModel.filteredRecipes.isEmpty {
-                    Text("No meals found.")
-                        .foregroundColor(.gray)
-                        .padding()
+                    
+                    VStack(spacing: 16) {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .font(.system(size: 48))
+                            .foregroundColor(.orange)
+
+                        Text("No meals found")
+                            .font(.title2)
+                            .bold()
+
+                        Text("Try adding more ingredients or adjusting your preferences.")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal)
+                    }
+                    .padding(.top, 60)
                 } else {
+                   
                     List(viewModel.filteredRecipes) { recipe in
                         NavigationLink(destination: RecipeDetailView(recipe: recipe)) {
                             VStack(alignment: .leading) {
