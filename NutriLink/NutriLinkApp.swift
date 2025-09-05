@@ -2,28 +2,17 @@ import SwiftUI
 
 @main
 struct NutriLinkApp: App {
-    @StateObject private var viewModel = MealSuggestionViewModel()
-    @StateObject private var taskVM = TaskManagerViewModel()
+    @StateObject private var mealVM = MealSuggestionViewModel()
 
     var body: some Scene {
         WindowGroup {
             TabView {
-    
-                NavigationStack {
-                    IngredientInputView()
-                        .environmentObject(viewModel)
-                }
-                .tabItem {
-                    Label("Meals", systemImage: "leaf")
-                }
+                IngredientInputView()
+                    .environmentObject(mealVM)
+                    .tabItem { Label("Meals", systemImage: "fork.knife") }
 
-         
-                NavigationStack {
-                    TaskListView(taskVM: taskVM)
-                }
-                .tabItem {
-                    Label("Tasks", systemImage: "checkmark.square")
-                }
+                TaskListView()
+                    .tabItem { Label("Tasks", systemImage: "checklist") }
             }
         }
     }
