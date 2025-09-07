@@ -1,10 +1,10 @@
 import Foundation
 import Combine
-
+//This works as a database to store all the tasks that users have entered to do in order to acheive their healthy eating habits.
 final class TaskStore: ObservableObject {
     @Published private(set) var tasks: [Task] = []
 
-
+    //This acts as a dummy database that losts the task name for iusers, any notes for instructions on how to complete the task, a time interval for the user to complete their task and the category that the task will reside in.
     init() {
         tasks = [
             Task(title: "Plan meals for the week", notes: "Use quick meals", dueDate: Date().addingTimeInterval(60*60*24), type: .personal),
@@ -13,7 +13,7 @@ final class TaskStore: ObservableObject {
         ]
     }
 
-
+    //This checks if the task that is entered is in the correct format.
     @discardableResult
     func add(_ task: Task) -> Result<Void, Error> {
         do {
@@ -25,6 +25,7 @@ final class TaskStore: ObservableObject {
         }
     }
 
+    // Update an existing task by replacing the entry with the same `id`.
     func update(_ task: Task) -> Result<Void, Error> {
         guard let idx = tasks.firstIndex(where: { $0.id == task.id }) else { return .success(()) }
         do {
@@ -35,6 +36,8 @@ final class TaskStore: ObservableObject {
             return .failure(error)
         }
     }
+    
+    // Provides users the option to remove any tasks that are in the list
 
     func delete(at offsets: IndexSet) {
         tasks.remove(atOffsets: offsets)
@@ -46,6 +49,8 @@ final class TaskStore: ObservableObject {
     }
 
     // MARK: - Derived views
+    
+    //Return tasks that ar eoverdue 
     var overdueTasks: [Task] {
         tasks.filter { $0.isOverdue() }
     }

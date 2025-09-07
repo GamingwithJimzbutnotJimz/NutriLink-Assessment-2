@@ -58,6 +58,7 @@ struct TaskEditorView: View {
                     }
                 }
             }
+            //Alert preferred invalid task being entered, and the error that had been caused
             .alert("Invalid Task", isPresented: $showAlert) {
                 Button("OK", role: .cancel) {}
             } message: {

@@ -1,22 +1,33 @@
 
 import Foundation
 
+//This is a View Model that stores all recipes, user preferences , and the user daily log
+
+//Lists of the recipes, log, and user preferences are established here. This also includes the recipes that have been filtered, where the recipes that are available to users are split into two different databases, one for filtered recipes and the other one for all the recipes.
 final class MealSuggestionViewModel: ObservableObject {
     @Published var allRecipes: [Recipe] = []
     @Published var filteredRecipes: [Recipe] = []
     @Published var todaysLog: [Recipe] = []
-    @Published var userPreferences: UserPreferences = .default   // ← Published
+    @Published var userPreferences: UserPreferences = .default
+    
+    //Calculates the total calories consumed, through the summation of all the meals that had been entered into the log.
 
     var totalCaloriesToday: Int {
         todaysLog.reduce(0) { $0 + $1.calories }
     }
+    
+    //Calculates the remaining calories that are left for the day, through subtracting the calorie goal that is set by the user through the userPreferences and the total calories that had been calcualted for the day.
     var remainingCaloriesToday: Int {
         max(0, userPreferences.calorieGoal - totalCaloriesToday)
     }
+    
+    // Calcualtes the fraction of how much the goal has been reached by the user.
     var progressToday: Double {
         guard userPreferences.calorieGoal > 0 else { return 0 }
         return min(1.0, Double(totalCaloriesToday) / Double(userPreferences.calorieGoal))
     }
+    
+    //Dummy dataset has been established here for the recipes that are available.
 
     func loadSampleRecipes() {
         allRecipes = [
@@ -29,7 +40,7 @@ final class MealSuggestionViewModel: ObservableObject {
                 cookingTime: 15,
                 calories: 400,
                 dietTags: [.vegetarian],
-                mealCategory: .quick,                 // ← compiles now
+                mealCategory: .quick,
                 instructions: ["Chop veggies", "Stir fry in pan", "Serve hot"]
             ),
             Recipe(
@@ -59,6 +70,9 @@ final class MealSuggestionViewModel: ObservableObject {
         ]
         filteredRecipes = allRecipes
     }
+    
+    
+    //This filters the recipes in the databse based on the ingredients that the user inputs in the list. If the user does not enter anything in the list then all the recipes that are availablea are displayed. For each of the recipes that are displayed, this function checks the list first and matches it with the ingredients in the recipe. The recipes that have similar ingredients aas the list will be displayed.
 
     func filterRecipes(by ingredients: [String]) {
         guard !allRecipes.isEmpty else { filteredRecipes = []; return }
@@ -69,15 +83,23 @@ final class MealSuggestionViewModel: ObservableObject {
                 }
             }
     }
+    
+    //This function is used to filter the recipes through the preferences that are entered by the user.
 
     func filterByPreferences() {
         filteredRecipes = (filteredRecipes.isEmpty ? allRecipes : filteredRecipes)
-            .filter { $0.matches(preferences: userPreferences) }   // ← now found
+            .filter { $0.matches(preferences: userPreferences) }
     }
+    
+    //Reset the current filters that have been set. This is actioned through a button
 
     func resetFilters() { filteredRecipes = allRecipes }
 
+    // This function will add the recipe to the list in the log
     func addToToday(_ recipe: Recipe) { todaysLog.append(recipe) }
+    //This function will provide users the option to remove a recipe from the log list, if a mistake had been made
     func removeFromToday(at offsets: IndexSet) { todaysLog.remove(atOffsets: offsets) }
+    
+    // This clears all the recipes from the log list.
     func clearToday() { todaysLog.removeAll() }
 }
