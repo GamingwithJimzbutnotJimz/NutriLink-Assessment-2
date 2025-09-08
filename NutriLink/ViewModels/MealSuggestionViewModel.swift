@@ -1,7 +1,7 @@
 
 import Foundation
 
-//This is a View Model that stores all recipes, user preferences , and the user daily log
+//This is a View Model that stores all recipes, user preferences , and the user daily log. This represents VM.
 
 //Lists of the recipes, log, and user preferences are established here. This also includes the recipes that have been filtered, where the recipes that are available to users are split into two different databases, one for filtered recipes and the other one for all the recipes.
 final class MealSuggestionViewModel: ObservableObject {
@@ -10,7 +10,7 @@ final class MealSuggestionViewModel: ObservableObject {
     @Published var todaysLog: [Recipe] = []
     @Published var userPreferences: UserPreferences = .default
     
-    //Calculates the total calories consumed, through the summation of all the meals that had been entered into the log.
+    //Calculates the total calories consumed, through the summation of all the meals that had been entered into the log. The functions that are incuded follow OOP principles, where these will be inherited in order maintain the functionality of the application. These will ensure that users are provied with correct information in regard to their calorie intake and progress.
 
     var totalCaloriesToday: Int {
         todaysLog.reduce(0) { $0 + $1.calories }
@@ -72,7 +72,7 @@ final class MealSuggestionViewModel: ObservableObject {
     }
     
     
-    //This filters the recipes in the databse based on the ingredients that the user inputs in the list. If the user does not enter anything in the list then all the recipes that are availablea are displayed. For each of the recipes that are displayed, this function checks the list first and matches it with the ingredients in the recipe. The recipes that have similar ingredients aas the list will be displayed.
+    //This filters the recipes in the databse based on the ingredients that the user inputs in the list. If the user does not enter anything in the list then all the recipes that are availablea are displayed. For each of the recipes that are displayed, this function checks the list first and matches it with the ingredients in the recipe. The recipes that have similar ingredients aas the list will be displayed. This wi;l follow an OOP style deign.
 
     func filterRecipes(by ingredients: [String]) {
         guard !allRecipes.isEmpty else { filteredRecipes = []; return }

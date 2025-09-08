@@ -1,6 +1,7 @@
 import Foundation
 import Combine
 //This works as a database to store all the tasks that users have entered to do in order to acheive their healthy eating habits.
+//OOP: TaskStore can be utilised as a Model controller in order to manage Tasks that are inputted in the databse.
 final class TaskStore: ObservableObject {
     @Published private(set) var tasks: [Task] = []
 
@@ -13,7 +14,7 @@ final class TaskStore: ObservableObject {
         ]
     }
 
-    //This checks if the task that is entered is in the correct format.
+    //This checks if the task that is entered is in the correct format. Utilises Protocol Orientation
     @discardableResult
     func add(_ task: Task) -> Result<Void, Error> {
         do {

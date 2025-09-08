@@ -1,5 +1,6 @@
 import Foundation
 
+//OOP Implemented here to ensure properties and functions maintain the same function accross all the views if required
 protocol TaskProtocol: Identifiable, Codable, Equatable {
     var id: UUID { get }
     var title: String { get set }
@@ -50,6 +51,7 @@ struct Task: TaskProtocol {
     var relatedRecipeID: UUID?
     var shoppingItems: [String]?
 
+        //The behaviour of this function updates as the data is entered
     mutating func toggleDone() {
         isDone.toggle()
         updatedAt = Date()
@@ -60,7 +62,9 @@ struct Task: TaskProtocol {
         return due < reference
     }
 
+    
     func validate() throws {
+        //This ensures validatin is kept simple and local to the model
         if title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             throw TaskValidationError.emptyTitle
         }
